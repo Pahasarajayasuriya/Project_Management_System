@@ -18,8 +18,11 @@ import {
 import { useForm } from "react-hook-form";
 import { tags } from "../ProjectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { useDispatch } from "react-redux";
+import { createProjects } from "@/Redux/Project/Action";
 
 const CreateProjectForm = () => {
+  const dispatch = useDispatch();
     const handleTagschange = (newValue) => {
         const currentTages  = form.getValues('tags');
         const updatedTags = currentTages.includes(newValue)?
@@ -32,10 +35,11 @@ const CreateProjectForm = () => {
       name: "",
       description: "",
       category: "",
-      tags: ["javascript", "react", "nodejs", "express", "mongodb"],
+      tags: ["javascript", "react"],
     },
   });
   const onSubmit = (data) => {
+    dispatch(createProjects(data));
     console.log("data", data);
   };
   return (

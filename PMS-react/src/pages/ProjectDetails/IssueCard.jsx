@@ -8,18 +8,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
-import React from "react";
 import UserList from "./UserList";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteIssue } from "@/Redux/Issue/Action";
 
-const IssueCard = () => {
+const IssueCard = ({ item, projectId }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const issues = useSelector(state => state.issues);
+  const handleIssueDelete = () => {
+    dispatch(deleteIssue(item.id));
+  };
   return (
     <div>
       <Card className="rounded-md py-1 pb-2">
         <CardHeader className="py-0 pb-1">
           <div className="flex justify-between items-center">
-            <CardTitle className='cursor-pointer' onClick={()=> navigate("/project/3/issue/10")}>Create Navbar</CardTitle>
+            <CardTitle
+              className="cursor-pointer"
+              onClick={() => navigate(`/project/${projectId}/issue/${item.id}`)}
+            >
+              {item.title}
+            </CardTitle>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button className="rounded-full" size="icon" variant="ghost">
@@ -30,7 +41,7 @@ const IssueCard = () => {
                 <DropdownMenuItem>In Progress</DropdownMenuItem>
                 <DropdownMenuItem>Done</DropdownMenuItem>
                 <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Delete</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleIssueDelete}>Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -52,7 +63,7 @@ const IssueCard = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <UserList />
+                <UserList issueDetails={item}/>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

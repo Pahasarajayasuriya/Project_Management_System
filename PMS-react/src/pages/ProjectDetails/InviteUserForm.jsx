@@ -1,3 +1,4 @@
+import { InviteToProject } from "@/Redux/Project/Action";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import {
@@ -8,18 +9,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const InviteUserForm = () => {
+  const dispatch = useDispatch();
+  const {id} = useParams();
   const form = useForm({
     defaultValues: {
       email: "",
     },
   });
   const onSubmit = (data) => {
-    console.log("data", data);
+    console.log("Form data:", data); // Add logging
+    dispatch(InviteToProject({ email: data.email, projectId: id }));
   };
+  
   return (
     <div>
       <Form {...form}>

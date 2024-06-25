@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +10,10 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProjectCard from "../Project/ProjectCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjects, searchProjects } from "@/Redux/Project/Action";
 
 export const tags = [
   "all",
@@ -30,12 +31,24 @@ export const tags = [
 
 const ProjectList = () => {
   const [keyword, setKeyword] = useState("");
-  const handleFilterChange = (section, value) => {
-    console.log("value", value, section);
+  const { project } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const handleFilterCategory = (value) => {
+    if(value === "all") return dispatch(fetchProjects({}));
+    dispatch(fetchProjects({ category: value }));
+    // console.log("value", value, section);
+  };
+  const handleFilterTags = (value) => {
+    if(value === "all") return dispatch(fetchProjects({}));
+    dispatch(fetchProjects({ tag: value }));
+    // console.log("value", value, section);
   };
   const handleSearchChange = (e) => {
     setKeyword(e.target.value);
+    dispatch(searchProjects({ keyword: e.target.value }));
   };
+
+  console.log("project store", project)
   return (
     <>
       <div className="relative px-5 lg:px-0 lg:flex gap-20 justify-center py-10">
@@ -56,7 +69,7 @@ const ProjectList = () => {
                       className="space-y-3 pt-5"
                       defaultValue="all"
                       onValueChange={(value) =>
-                        handleFilterChange("category", value)
+                        handleFilterCategory(value)
                       }
                     >
                       <div className="flex items-center gap-2">
@@ -86,7 +99,7 @@ const ProjectList = () => {
                       className="space-y-3 pt-5"
                       defaultValue="all"
                       onValueChange={(value) =>
-                        handleFilterChange("tag", value)
+                        handleFilterTags(value)
                       }
                     >
                       {tags.map((tag) => (
@@ -114,9 +127,13 @@ const ProjectList = () => {
             </div>
           </div>
           <div className="space-y-5 min-h-[74vh]">
-            {keyword
-              ? [1, 1, 1].map((item) => <ProjectCard key={item}/>)
-              : [1, 1, 1, 1].map((item) => <ProjectCard key={item}/>)}
+            {keyword && project.searchProjects
+              ? project.searchProjects.map((item, index) => (
+                <ProjectCard item={item} key={`${item.id}-${index}`} />
+                ))
+              : project.projects.map((item) => (
+                  <ProjectCard key={item.id} item={item} />
+                ))}
           </div>
         </section>
       </div>
