@@ -9,17 +9,23 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
+    private static final Logger LOGGER = Logger.getLogger(EmailServiceImpl.class.getName());
+
     @Autowired
     private JavaMailSender javaMailSender;
+
     @Override
     public void sendEmailWithToken(String userEmail, String link) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-        String subject ="Join Project Team Invitation";
-        String text = "Click the link to join the project team: "+link;
+        String subject = "Join Project Team Invitation";
+        String text = "Click the link to join the project team: " + link;
 
         helper.setSubject(subject);
         helper.setText(text, true);
@@ -27,9 +33,13 @@ public class EmailServiceImpl implements EmailService{
 
         try {
             javaMailSender.send(mimeMessage);
+            LOGGER.info("Email sent successfully to " + userEmail);
         } catch (MailSendException e) {
-            throw new MailSendException("Error sending email");
+            LOGGER.log(Level.SEVERE, "MailSendException: Error sending email to " + userEmail, e);
+            throw new MailSendException("Error sending email to " + userEmail, e);
+        } catch (MailException e) {
+            LOGGER.log(Level.SEVERE, "MailException: Error sending email to " + userEmail, e);
+            throw new MessagingException("Error sending email to " + userEmail, e);
         }
-
     }
 }
