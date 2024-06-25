@@ -38,9 +38,6 @@ const IssueCard = ({ item, projectId }) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>In Progress</DropdownMenuItem>
-                <DropdownMenuItem>Done</DropdownMenuItem>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
                 <DropdownMenuItem onClick={handleIssueDelete}>Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -48,7 +45,6 @@ const IssueCard = ({ item, projectId }) => {
         </CardHeader>
         <CardContent className="py-0">
           <div className="flex items-center justify-between">
-            <p>FBP - {1}</p>
             <DropdownMenu className="w-[30rem] border border-red-400">
               <DropdownMenuTrigger>
                 <Button

@@ -107,19 +107,6 @@ const IssueDetails = () => {
                   <p className="w-[7rem]">Status</p>
                   <Badge>{issue.issueDetails?.status}</Badge>
                 </div>
-                <div className="flex gap-10 items-center">
-                  <p className="w-[7rem]">Release</p>
-                  <p>10-06-2024</p>
-                </div>
-                <div className="flex gap-10 items-center">
-                  <p className="w-[7rem]">Reporter</p>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8 text-xs">
-                      <AvatarFallback>S</AvatarFallback>
-                    </Avatar>
-                    <p>Senuri</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

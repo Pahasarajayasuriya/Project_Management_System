@@ -53,7 +53,7 @@ const Login = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    type="text"
+                    type="password"
                     className="border w-full border-gray-700 py-5 px-5"
                     placeholder="Password"
                   />
