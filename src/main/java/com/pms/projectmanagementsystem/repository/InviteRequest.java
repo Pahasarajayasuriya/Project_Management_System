@@ -10,4 +10,12 @@ import lombok.NoArgsConstructor;
 public class InviteRequest {
     private String email;
     private Long projectId;
+
+    @Override
+    public String toString() {
+        return "InviteRequest{" +
+                "email='" + email + '\'' +
+                ", projectId=" + projectId +
+                '}';
+    }
 }
